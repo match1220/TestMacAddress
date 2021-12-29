@@ -3,6 +3,8 @@ import CoreLocation
 
 import SystemConfiguration.CaptiveNetwork
 import UIKit
+import NetworkExtension
+
 
 class ViewController: UIViewController {
     
@@ -32,10 +34,37 @@ class ViewController: UIViewController {
         IPAddressLabel.text = getIPAddress()
         MacAddressLabel.text = MACAddressForBSD(bsd: "en0")
         
-  
+        fetchNetworkInfo()
     }
     
-    
+    func fetchNetworkInfo() {
+            NEHotspotNetwork.fetchCurrent { network in
+                guard let network = network else { return }
+                
+                print("The SSID for the Wi-Fi network.")
+                print("ssid:", network.ssid, "\n")
+              
+
+                print("The BSSID for the Wi-Fi network.")
+                print("bssid:", network.bssid, "\n")
+              
+                
+                print("The recent signal strength for the Wi-Fi network.")
+                print("signalStrength:", network.signalStrength, "\n")
+                
+                print("Indicates whether the network is secure")
+                print("isSecure:", network.isSecure, "\n")
+                
+                print("Indicates whether the network was joined automatically or was joined explicitly by the user.")
+                print("didAutoJoin:", network.didAutoJoin, "\n")
+                
+                print("Indicates whether the network was just joined.")
+                print("didJustJoin:", network.didJustJoin, "\n")
+                
+                print("Indicates whether the calling Hotspot Helper is the chosen helper for this network.")
+                print("isChosenHelper:", network.isChosenHelper, "\n")
+            }
+        }
     
     func getUsedSSID() -> String {
         
